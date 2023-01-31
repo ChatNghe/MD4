@@ -25,7 +25,9 @@
 /// <reference types="mongoose/types/inferschematype" />
 declare class CartDetailService {
     constructor();
-    addCartDetail: (idProduct: any, idCart: any, amount: any, total: any) => Promise<void>;
+    addCartDetail: (idProduct: any, idCart: any, amount: any, total: any) => Promise<import("mongoose").Document<unknown, any, import("../model/cartDetail").ICartDetail> & import("../model/cartDetail").ICartDetail & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
     finById: (idCart: any) => Promise<Omit<import("mongoose").Document<unknown, any, import("../model/cartDetail").ICartDetail> & import("../model/cartDetail").ICartDetail & {
         _id: import("mongoose").Types.ObjectId;
     }, never>[]>;

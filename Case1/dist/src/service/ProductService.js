@@ -31,6 +31,10 @@ class ProductService {
             }
             return product_1.Product.deleteOne({ _id: id });
         };
+        this.search = async (name) => {
+            let product = await product_1.Product.find({ 'name': { '$regex': name, '$options': 'i' } });
+            return product;
+        };
     }
 }
 exports.default = new ProductService();

@@ -27,7 +27,7 @@ app.use((0, express_session_1.default)({
     resave: true,
     saveUninitialized: true,
     secret: 'somesecret',
-    cookie: { maxAge: 60000 }
+    cookie: { maxAge: 600000000000 }
 }));
 app.use('', router_1.router);
 app.listen(8080, () => {

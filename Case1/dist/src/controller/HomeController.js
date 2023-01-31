@@ -9,8 +9,15 @@ class HomeController {
     constructor() {
         this.showHome = async (req, res) => {
             let products = await ProductService_1.default.getAll();
-            console.log(req.session["User"]);
-            if (req.session.User.role === 'admin') {
+            if (req.session["User"].role === 'admin') {
+                res.render('home', { products: products });
+            }
+            else
+                res.render('homeUser', { products: products });
+        };
+        this.showHomeSearch = async (req, res) => {
+            let products = await ProductService_1.default.search(req.body.search);
+            if (req.session["User"].role === 'admin') {
                 res.render('home', { products: products });
             }
             else
@@ -19,6 +26,9 @@ class HomeController {
         this.showFormCreate = async (req, res) => {
             let categories = await this.categoryService.getAll();
             res.render('products/create', { categories: categories });
+        };
+        this.showCheckOut = async (req, res) => {
+            res.render('products/checkout');
         };
         this.create = async (req, res) => {
             if (req.files) {

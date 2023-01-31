@@ -1,15 +1,16 @@
-import {model, Schema} from "mongoose";
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
-export interface IProduct{
-    name ?: string;
-    price ?: number;
-    image ?: string;
+@Entity()
+export class Product {
+    @PrimaryGeneratedColumn()
+    id: number;
+    @Column({type:"text"})
+    name: string
+    @Column({type:"int"})
+    price: number
+    @Column({type:"text"})
+    image: string
+    @Column()
+    category: number
 }
-const ProductSchema = new Schema<IProduct>({
-    name: String,
-    price: Number,
-    image: String
-});
 
-const Product = model<IProduct>('Product', ProductSchema)
-export {Product};

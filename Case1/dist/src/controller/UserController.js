@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const UserService_1 = __importDefault(require("../service/UserService"));
 const cartService_1 = __importDefault(require("../service/cartService"));
-class HomeController {
+class UserController {
     constructor() {
         this.showFormLogin = async (req, res) => {
             await this.userService.getAll();
@@ -24,8 +24,13 @@ class HomeController {
                 res.redirect(301, '/users/login');
             }
         };
+        this.logOut = async (req, res) => {
+            req.session.destroy(() => {
+                res.redirect(301, '/users/login');
+            });
+        };
         this.userService = UserService_1.default;
     }
 }
-exports.default = new HomeController();
+exports.default = new UserController();
 //# sourceMappingURL=UserController.js.map

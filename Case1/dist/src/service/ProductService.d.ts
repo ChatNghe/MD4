@@ -34,6 +34,9 @@ declare class ProductService {
     private update;
     private findById;
     private remove;
+    search: (name: any) => Promise<(import("mongoose").Document<unknown, any, import("../model/product").IProduct> & import("../model/product").IProduct & {
+        _id: import("mongoose").Types.ObjectId;
+    })[]>;
 }
 declare const _default: ProductService;
 export default _default;

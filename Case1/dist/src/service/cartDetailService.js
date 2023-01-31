@@ -4,7 +4,7 @@ const cartDetail_1 = require("../model/cartDetail");
 class CartDetailService {
     constructor() {
         this.addCartDetail = async (idProduct, idCart, amount, total) => {
-            await cartDetail_1.CartDetails.create([{ product: idProduct, cart: idCart, amountProduct: amount, total: total }]);
+            return cartDetail_1.CartDetails.create({ product: idProduct, cart: idCart, amountProduct: amount, total: total });
         };
         this.finById = async (idCart) => {
             let product = await cartDetail_1.CartDetails.find({ cart: idCart }).populate('product');

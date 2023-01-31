@@ -10,8 +10,10 @@ const product_router_1 = require("./product-router");
 const user_router_1 = require("./user-router");
 const cart_router_1 = require("./cart-router");
 exports.router = (0, express_1.Router)();
-exports.router.get('/home', HomeController_1.default.showHome);
 exports.router.use('/products', product_router_1.productRouter1);
 exports.router.use('/users', user_router_1.userRouter);
 exports.router.use('/carts', cart_router_1.cartRouter);
+exports.router.get('/home', HomeController_1.default.showHome);
+exports.router.post('/home', HomeController_1.default.showHomeSearch);
+exports.router.get('/checkout', HomeController_1.default.showCheckOut);
 //# sourceMappingURL=router.js.map

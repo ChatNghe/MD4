@@ -1,32 +1,92 @@
 import {Request, Response} from "express";
 import productService from "../service/ProductService";
+import categoryService from "../service/CategoryService";
 
 class HomeController {
     private productService;
+    private categoryService;
 
     constructor() {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
-    showHome = async (req: Request, res: Response) => {
+    getAll = async (req: Request, res: Response) => {
+        try {
+            let products = await productService.getAll()
+            res.status(200).json(products)
+        } catch (e) {
+            res.status(500).json({
+                    message: e.message
+                }
+            )
+        }
 
-        let products = await productService.getAll()
-        res.render('home', {products: products})
 
     }
-    showFormCreate = async (req: Request, res: Response) => {
-        res.render('products/create');
-    }
+
     create = async (req: Request, res: Response) => {
-        if (req.files) {
-            let image = req.files.image
-            if ("mv" in image) {
-                await image.mv('./public/storage/' + image.name)
-                let product = req.body;
-                product.image = '/storage/' + image.name;
-                await productService.save(product)
-                res.redirect(301, '/home');
-            }
+        try {
+            let product = await productService.save(req.body)
+            res.status(200).json(product)
+
+        } catch (e) {
+            res.status(500).json({
+                    message: e.message
+                }
+            )
+        }
+
+    }
+
+    update = async (req: Request, res: Response) => {
+        try {
+            let id = req.params.id;
+            let product = await this.productService.update(id, req.body)
+            res.status(200).json(product)
+        } catch (e) {
+            res.status(500).json({
+                    message: e.message
+                }
+            )
+        }
+
+    }
+
+    remove = async (req: Request, res: Response) => {
+        try {
+            let id = req.params.id;
+            await this.productService.remove(id)
+            res.status(200).json({message: 'thành công'})
+        } catch (e) {
+            res.status(500).json({
+                    message: e.message
+                }
+            )
+        }
+    }
+    findById = async (req: Request, res: Response) => {
+        try {
+            let id = req.params.id;
+            let product = await this.productService.findById(id)
+            res.status(200).json(product)
+        } catch (e) {
+            res.status(500).json({
+                    message: e.message
+                }
+            )
+        }
+    }
+    findByName = async (req: Request, res: Response) => {
+        try {
+            let name = req.query.name;
+            let product = await this.productService.findByName(name)
+            res.status(200).json(product)
+        } catch (e) {
+            res.status(500).json({
+                    message: e.message
+                }
+            )
         }
     }
 }

@@ -12,23 +12,28 @@ class CartDetailController {
     constructor() {
         this.showFormCart = async (req, res) => {
             let Cart = await cartService_1.default.findById(req.session["User"]._id);
-            console.log(Cart);
             let idCart = Cart._id.toString();
             let products = await cartDetailService_1.default.finById(idCart);
             res.render('products/cart', { product1: products, cart: Cart });
         };
         this.addCartDetail = async (req, res) => {
             const idProduct = req.params.id;
-            let Cart = await cartService_1.default.findById(req.session["User"]._id);
-            let idCart = Cart._id.toString();
-            let priceProduct = await this.productService.findById(idProduct);
-            let amountProduct = 1;
-            let total = amountProduct * priceProduct.price;
-            await cartDetailService_1.default.addCartDetail(idProduct, idCart, amountProduct, total);
-            let totalProduct = await cartDetailService_1.default.fillTotal(idCart);
-            let totalCart = totalProduct[totalProduct.length - 1].total;
-            await cartService_1.default.addTotal(req.session["User"]._id, totalCart);
-            res.redirect(301, '/home');
+            if (req.session["User"] !== undefined) {
+                let Cart = await cartService_1.default.findById(req.session["User"]._id);
+                let idCart = Cart._id.toString();
+                let priceProduct = await this.productService.findById(idProduct);
+                let amountProduct = 1;
+                let total = amountProduct * priceProduct.price;
+                await cartDetailService_1.default.addCartDetail(idProduct, idCart, amountProduct, total);
+                let totalProduct = await cartDetailService_1.default.fillTotal(idCart);
+                let totalCart = totalProduct[totalProduct.length - 1].total;
+                await cartService_1.default.addTotal(req.session["User"]._id, totalCart);
+                res.redirect(301, '/home');
+            }
+            else {
+                console.log(1);
+                console.log(req.session);
+            }
         };
         this.updateQuantity = async (req, res) => {
             const idProduct = req.params.id;
@@ -48,13 +53,12 @@ class CartDetailController {
         };
         this.deleteProductCart = async (req, res) => {
             let idCartDetail = req.params.id;
-            let id = req.session["user"];
             await cartDetailService_1.default.deleteCartDetail(idCartDetail);
-            let Cart = await cartService_1.default.findById(id.id);
+            let Cart = await cartService_1.default.findById(req.session["User"]._id);
             let idCart = Cart._id.toString();
             let totalProduct = await cartDetailService_1.default.fillTotal(idCart);
             let totalCart = totalProduct[totalProduct.length - 1].total;
-            await cartService_1.default.addTotal(id.id, totalCart);
+            await cartService_1.default.addTotal(req.session["User"]._id, totalCart);
             res.redirect('/carts/cart');
         };
         this.productService = productService_1.default;
