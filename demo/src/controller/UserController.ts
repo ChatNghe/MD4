@@ -11,23 +11,14 @@ class HomeController {
 
     }
 
-    showFormLogin = async (req: Request, res: Response) => {
-        await this.userService.getAll()
-        res.render('user/login')
-
+    register = async (req: Request, res: Response) => {
+        let user = await this.userService.register(req.body);
+        res.status(201).json(user)
     }
     login = async (req: Request, res: Response) => {
-        console.log(11111)
-        console.log(req.body, 'q111')
-        let user = await this.userService.checkUser(req.body)
-        if(user){
-            // @ts-ignore
-            req.session.User = user;
-            res.redirect(301,'/home')
-        }else {
-            res.redirect(301,'/users/login')
-        }
-
+        let response = await this.userService.checkUser(req.body);
+        res.status(200).json(response)
     }
 }
+
 export default new HomeController()

@@ -11,5 +11,5 @@ const CategoryController_1 = __importDefault(require("../controller/CategoryCont
 exports.router = (0, express_1.Router)();
 exports.router.get('/categories', CategoryController_1.default.getAll);
 exports.router.use('/products', product_router_1.productRouter);
-exports.router.use('/users', user_router_1.userRouter);
+exports.router.use('/auth', user_router_1.userRouter);
 //# sourceMappingURL=router.js.map
